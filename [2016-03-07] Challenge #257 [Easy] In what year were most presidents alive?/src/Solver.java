@@ -26,32 +26,20 @@ public class Solver {
 
     private Livedates getNextLivedates(Scanner input) throws ParseException {
         if (input.hasNextLine()) {
-            String line = input.nextLine();
-
-            Date birthDate = null;
-            Date deathDate = null;
-            int lastIndex = 0;
-            int currIndex = 0;
-            int count = 0;
-            while (currIndex != -1) {
-                currIndex = line.indexOf(",", lastIndex + 1);
-                count++;
-                if (count == 2) {
-                    String birth = line.substring(lastIndex + 1, currIndex).trim();
-                    if (!birth.equals("")) {
-                        birthDate = dateFormat.parse(birth);
-                    }
-                } else if (count == 4) {
-                    String death = line.substring(lastIndex + 1, currIndex).trim();
-                    if (!death.equals("")){
-                        deathDate = dateFormat.parse(death);
-                    }
-                }
-                lastIndex = currIndex;
-            }
+            String[] line = input.nextLine().split(",");
+            Date birthDate = getDate(line[1].trim());
+            Date deathDate = getDate(line[3].trim());
             return new Livedates(birthDate, deathDate);
         }
         return null;
+    }
+
+    private Date getDate(String dateString) throws ParseException {
+        Date date = null;
+        if (!dateString.equals("")) {
+            date = dateFormat.parse(dateString);
+        }
+        return date;
     }
 
     private int getYearFromDate(Date date){
